@@ -342,6 +342,8 @@ static void tcf_ct_flow_table_put(struct tcf_ct_params *params)
 	}
 }
 
+#define	DAY	(86400 * HZ)
+
 static void tcf_ct_flow_table_add(struct tcf_ct_flow_table *ct_ft,
 				  struct nf_conn *ct,
 				  bool tcp)
@@ -366,6 +368,8 @@ static void tcf_ct_flow_table_add(struct tcf_ct_flow_table *ct_ft,
 	err = flow_offload_add(&ct_ft->nf_ft, entry);
 	if (err)
 		goto err_add;
+
+	ct->timeout = nfct_time_stamp + DAY;
 
 	return;
 
